@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{authblk}
+
+\setlength\parindent{0pt}
+\setlength{\parskip}{8pt}
+
+\title{Exploring the Frontier --- From Specification to Speed\\
+Project Proposal}
+
+\author{Team Member 1}
+\author{Team Member 2} 
+\author{Team Member 3}
+\affil{Team Name (Group Number)}
+%Remove the following line when you remove the Instructions section. That way your section numbers start from one. 
+\setcounter{section}{-1}
+
+\date{\today}
+\begin{document}
+
+\maketitle
+
+
+\section{Instructions}  
+
+\subsection{LaTeX Instructions} 
+\textsc{Do not} make your own \LaTeX file. Download the \LaTeX file at this link to your computer, rename it, and then use that template to write your proposal. 
+
+\begin{center}
+\url{https://www.overleaf.com/read/wwqkqcggnxrp#a2cb66}
+\end{center}
+
+Give yourselves a team name. Fill in your Team Members names in the author list. Add your team name and group number to the affiliation ({\verb|\affil{}|}) field.  Replace the title with one that accurately reflects the focus and scope of your project.
+
+\subsection{Proposal Overview}
+Your proposal should clearly define the problem you intend to solve, explain why it is interesting and relevant to the themes of program correctness and performance, and describe what you intend to produce. 
+
+The proposal must be written in \LaTeX and should be approximately 3–4 sections, not exceeding two pages in the provided template (roughly 800–1,200 words). It should be precise and specific enough that your classmates can understand exactly what you plan to accomplish and how you will approach it.
+
+
+
+\subsection{Submission Instructions} 
+Submit 
+\textbf{one} compiled PDF file containing your project proposal.  Your file should be named: ``\texttt{<team\_name>\_group<group number>.pdf}.''  \newline 
+
+Remove this section from your file before submitting. 
+
+
+\section{Project Description}
+
+Our project will experiment with Sparse Matrix-Vector Multiplication. There are various different ways to store sparse matrices that all have their own tradeoffs. Just to name a few, there exists: Coordinate (COO), Compressed Sparse Row (CSR), ELLPACK (ELL), Diagonal (DIA), and many different blocked or hybrid models\cite{formats}. 
+
+Sparse matrices are often used in ML contexts, so we are going to implement some of the basic storage methods and possibly some of our own hybrid methods in CUDA kernels so that we can run them on GPUs. We will write and test our code using Google Colab and try to work with multiple GPU types (although this is dependent on hardware availability) and once we have working kernels we will run evaluations for each of our storage methods. One benchmark that we may test is the SuiteSparse Matrix Collection \cite{SuiteSparse} which is the current industry standard for testing CUDA kernel performance on various matrix operations.
+
+After evaluation, we plan to develop a roofline model, showcasing the tradeoffs of the different storage methods. It's important to note that this operation is fundamentally memory-bound \cite{Davis2012SpMVAM}. Our analysis will likely be demonstrating how well these formats fill a GPU's memory bandwidth. 
+
+\section{Background and Relevance}
+
+% Provide sufficient background for the reader to understand the problem.
+% Explain why the project is interesting, challenging, and relevant to
+% the themes of correctness and performance in this course.
+Many applications of machine learning models require computations with sparse matrices. For example, sparse matrices can arise when working with specific types of data, most notably when observations record counts of activities, such as the number of listens per song in a song catalog.~\cite{machinelearningmastery}
+Sparse matrices may also arise when running image recognition models on images with many dark pixels, for example.
+
+Sparse matrices are different from generalized matrices, as classic algorithms for matrix multiplication perform many unnecessary computations when considering elements that are mostly zeros.
+If we can find a way to consider only nonzero elements, we can speed up the general matrix algorithms by a large factor.
+
+We also want to explore applications of sparse matrix multiplication on GPUs.
+Since GPUs are best for fixed-size operations, with some architectures not even supporting arbitrary loops~\cite{redhat}, sparse matrix operations can be difficult to compute efficiently on GPUs, as they might require a variable number of computations based on which part of the matrix is being operated on.
+
+\section{Expected Results}
+
+The end results this project aims for is correct and performant implementations of matrix-vector multiplication CUDA kernels that utilize both state of the art and previously state of the art sparse matrix data structures and algorithms for multiplication. This will finally be comprise of:
+
+\begin{itemize}
+    \item A driver/testing infrastructure to verify the correctness of CUDA kernels on any arbitrary-sized matrix.
+    \item Correct and performant implementations of CUDA kernels representing matrix-vector multiplications on different forms of representing sparse matrices.
+    \item Code and writeup detailing the performance of the various algorithms on different sizes and types of sparse matrices.
+    \item A writeup that details the specific bottlenecks of the algorithms and how the bottlenecks were discovered, along with potential ideas on resolving these bottlenecks.
+\end{itemize}
+
+Be specific about what a successful outcome looks like.
+
+\section*{Team Plan}
+
+Describe how responsibilities will be divided among team members.
+Each member should be responsible for a substantive portion of the project.
+
+\bibliographystyle{plain}
+\bibliography{citations}
+
+\end{document}
